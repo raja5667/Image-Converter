@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 import traceback
 import time
@@ -19,6 +18,22 @@ from PyQt6.QtWidgets import (
 # ----------------------------------------------------------------------
 # SECURITY AND ROBUSTNESS ENHANCEMENTS (PILLOW)
 # ----------------------------------------------------------------------
+
+def get_resource_path(relative_path: str) -> str:
+        """
+        Returns absolute path to resource, works for:
+        - Development
+        - PyInstaller --onefile
+        - PyInstaller --onedir
+        """
+        if getattr(sys, 'frozen', False):
+            # Running as compiled EXE
+            base_path = Path(sys._MEIPASS)
+        else:
+            # Running as normal Python script
+            base_path = Path(__file__).parent
+    
+        return str(base_path / relative_path)
 
 Image.MAX_IMAGE_PIXELS = 1024 * 1024 * 500
 
@@ -818,101 +833,106 @@ class ImageConverterApp(QWidget):
 
     def app_stylesheet(self):
         """Returns the main application stylesheet."""
-        return """
-        QWidget {
+
+        icon_path = get_resource_path("icons/down_arrow.svg")
+        icon_path = icon_path.replace("\\", "/")
+        
+        return f"""
+        QWidget {{
             background: #0f0f12;
             color: #ffffff;
             font-family: "Segoe UI", Roboto, Arial;
             font-size: 13px;
-        }
-
-        QLabel[neonLabel="true"] {
+        }}
+    
+        QLabel[neonLabel="true"] {{
             color: #9ffcff;
             font-size: 13px;
             font-weight: 600;
             letter-spacing: 0.4px;
             padding-left: 2px;
-        }
+        }}
         
-        QFrame#gradientFrame {
+        QFrame#gradientFrame {{
             border-radius: 14px;
             background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
                 stop:0 rgba(98, 60, 255, 220),
                 stop:0.3 rgba(72, 153, 255, 200),
                 stop:0.6 rgba(255, 87, 140, 180),
                 stop:1 rgba(255, 195, 113, 160));
-        }
-        QPushButton {
+        }}
+    
+        QPushButton {{
             border-radius: 10px;
             padding: 8px 12px;
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                 stop:0 rgba(255,255,255,0.06), stop:1 rgba(255,255,255,0.02));
             border: 1px solid rgba(255,255,255,0.08);
             color: #fff;
-        }
-        QPushButton:hover {
+        }}
+    
+        QPushButton:hover {{
             border: 1px solid rgba(255,255,255,0.18);
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                 stop:0 rgba(255,255,255,0.09), stop:1 rgba(255,255,255,0.03));
-        }
-        QComboBox {
+        }}
+    
+        QComboBox {{
             background: #0d0f14;
             border: 2px solid #00faff;
             border-radius: 10px;
             padding: 6px 36px 6px 10px;
             color: #bffcff;
             font-size: 14px;
-        }
+        }}
         
-        QComboBox:hover {
+        QComboBox:hover {{
             border: 2px solid #61ffff;
-        }
+        }}
         
-        QComboBox::drop-down {
+        QComboBox::drop-down {{
             border: none;
             width: 26px;
             background: transparent;
-        }
+        }}
         
-        QComboBox::down-arrow {
-            /* Use the SVG image file */
-            image: url("icons/down_arrow.svg"); 
-            
-            /* Set dimensions for your icon */
+        QComboBox::down-arrow {{
+            image: url("{icon_path}");
             width: 38px;
             height: 38px;
-            
-            /* Ensure it is centered and properly spaced */
             margin-right: 10px;
-            
-            /* Remove any border or background conflicts */
             border: none;
             background: transparent;
-        }
-        QComboBox QAbstractItemView {
+        }}
+    
+        QComboBox QAbstractItemView {{
             background: #0c0e13;
             color: #cfffff;
             border: 1px solid #00faff;
             selection-background-color: #00faff;
             selection-color: black;
-        }
-        QListWidget {
+        }}
+    
+        QListWidget {{
             background: rgba(0,0,0,0.12);
             border-radius: 8px;
-            outline: 0; /* Remove focus border */
-        }
-        QListWidget::item:selected {
-            background: rgba(255,255,255,0.15); /* Highlight selected item */
-        }
-        QProgressBar {
+            outline: 0;
+        }}
+    
+        QListWidget::item:selected {{
+            background: rgba(255,255,255,0.15);
+        }}
+    
+        QProgressBar {{
             border-radius: 8px;
             height: 14px;
             background: #0b0f1a;
             text-align: center;
             color: #7df9ff;
             font-weight: bold;
-        }
-        QProgressBar::chunk {
+        }}
+    
+        QProgressBar::chunk {{
             border-radius: 8px;
             background: qlineargradient(
                 x1:0, y1:0, x2:1, y2:0,
@@ -920,7 +940,7 @@ class ImageConverterApp(QWidget):
                 stop:0.4 #00bfff,
                 stop:1 #0066ff
             );
-        }
+        }}
         """
     
     def _get_allowed_extensions(self):
