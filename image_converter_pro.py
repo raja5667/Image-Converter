@@ -669,7 +669,7 @@ class PerfectNeonButton(QPushButton):
 class ImageConverterApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Image Format Converter — Colorful Gradient UI")
+        self.setWindowTitle("Image Format Converter")
         self.files = []  
         self.worker = None
         self.dest_folder = None
