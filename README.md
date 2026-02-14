@@ -94,7 +94,7 @@ pip install pyinstaller
 Then build:
 
 ```bash
-pyinstaller --onefile --windowed --icon=app_icon.ico image_converter_pro.py
+pyinstaller --onefile --windowed --icon=app_icon.ico --name "IMG Converter" image_converter_pro.py
 ```
 
 The final executable will be inside:
