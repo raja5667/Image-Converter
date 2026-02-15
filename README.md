@@ -1,5 +1,10 @@
 # Image Converter Pro
 
+![GitHub release](https://img.shields.io/github/v/release/raja5667/Image-Converter)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 A PyQt6-based desktop application for converting images between multiple formats with a clean UI and fast processing.
 
 ---
